@@ -2,14 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>ASMR Narrativo</title>
+  <title>ASMR con subtítulos</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    .plyr {
+      max-width: 600px;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
-  <h1>Escucha con subtítulos</h1>
-  <audio controls>
-    <source src="audio/RJ01215980.mp3" type="audio/mpeg">
-    <track src="subtitulos/RJ01215980.vtt" kind="subtitles" srclang="es" label="Español" default>
-    Tu navegador no soporta audio con subtítulos.
+
+  <h1>Audio narrativo</h1>
+  <audio id="player" controls crossorigin>
+    <source src="audio/asmr01.mp3" type="audio/mp3" />
+    <track kind="subtitles" label="Español" srclang="es" src="subtitulos/asmr01.vtt" default />
   </audio>
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script>
+    const player = new Plyr('#player', {
+      captions: { active: true, update: true, language: 'es' },
+      i18n: {
+        speed: 'Velocidad',
+        captions: 'Subtítulos',
+        disabled: 'Desactivar',
+        enabled: 'Activar',
+      }
+    });
+  </script>
+
 </body>
 </html>
