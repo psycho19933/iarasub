@@ -16,12 +16,16 @@
       max-width: 600px;
       margin: auto;
     }
+    video {
+      width: 100%;
+      height: auto;
+    }
   </style>
 </head>
 <body>
 
   <h1>Audio narrativo</h1>
-  <video id="player" controls crossorigin>
+  <video id="player" controls crossorigin playsinline>
     <source src="video/RJ01215980.mp4" type="video/mp4" />
     <track kind="subtitles" label="Español" srclang="es" src="subtitulos/RJ01215980.srt" default />
   </video>
