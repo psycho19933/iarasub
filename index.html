@@ -16,15 +16,19 @@
       max-width: 600px;
       margin: auto;
     }
+    video {
+      width: 100%;
+      height: auto;
+    }
   </style>
 </head>
 <body>
 
   <h1>Audio narrativo</h1>
-  <audio id="player" controls crossorigin>
-    <source src="audio/RJ01215980.mp3" type="audio/mp3" />
-    <track kind="subtitles" label="Español" srclang="es" src="subtitulos/RJ01215980.vtt" default />
-  </audio>
+  <video id="player" controls crossorigin playsinline>
+    <source src="video/RJ01215980.mp4" type="video/mp4" />
+    <track kind="subtitles" label="Español" srclang="es" src="subtitulos/RJ01215980.srt" default />
+  </video>
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
