@@ -14,25 +14,36 @@
     }
     .plyr {
       max-width: 600px;
-      margin: auto;
+      margin: 2em auto;
     }
     video {
       width: 100%;
       height: auto;
     }
+    h2 {
+      margin-top: 3em;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Audio narrativo</h1>
-  <video id="player" controls crossorigin playsinline>
+  <h1>Audio narrativo subtitulado</h1>
+
+  <h2>🔹 Muestra: RJ01215980</h2>
+  <video id="player1" controls crossorigin playsinline>
     <source src="video/RJ01215980.mp4" type="video/mp4" />
     <track kind="subtitles" label="Español" srclang="es" src="subtitulos/RJ01215980.vtt" default />
   </video>
 
+  <h2>🔹 Muestra: RJ272127HCS</h2>
+  <video id="player2" controls playsinline>
+    <source src="video/RJ272127HCS.mp4" type="video/mp4" />
+  </video>
+
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
-    const player = new Plyr('#player', {
+    const player1 = new Plyr('#player1', {
       captions: { active: true, update: true, language: 'es' },
       i18n: {
         speed: 'Velocidad',
@@ -41,7 +52,11 @@
         enabled: 'Activar',
       }
     });
+    const player2 = new Plyr('#player2');
   </script>
+
+</body>
+</html>
 
 </body>
 </html>
