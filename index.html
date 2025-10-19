@@ -1,135 +1,132 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>ASMR con subtítulos</title>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-  <style>
-    body {
-      background-color: #000; /* Fondo negro */
-      color: #eee;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 2em;
+<!-- ====================================================== -->
+<!-- POST DE AUDIO CON PLAYLIST                             -->
+<!-- ====================================================== -->
+<article class="asmr-post playlist-container">
+    <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
+    <p>6 tracks.</p>
+
+    <!-- 1. EL REPRODUCTOR DE AUDIO PRINCIPAL (SOLO HAY UNO) -->
+    <audio controls preload="metadata" style="width:100%;">
+        <!-- El track de subtítulos se cargará dinámicamente con JS -->
+        <track label="Español" kind="subtitles" srclang="es" src="" default>
+    </audio>
+
+    <!-- 2. LA LISTA DE PISTAS (LA PLAYLIST VISUAL) -->
+    <ol class="playlist">
+        <li class="playlist-track" 
+            data-src="audios/tr00_タイトルコール.opus" 
+            data-subtitles="subtitulos/tr00_タイトルコール.vtt">
+            1. tr00_タイトルコール
+        </li>
+        <li class="playlist-track" 
+            data-src="audios/tr01_友達の母親とお風呂に....opus" 
+            data-subtitles="subtitulos/tr01_友達の母親とお風呂に....vtt">
+            2. tr01_友達の母親とお風呂に...
+        </li>
+        <li class="playlist-track" 
+            data-src="audios/tr02_友達の母親に初めてのフェラチオをされて.opus" 
+            data-subtitles="subtitulos/tr02_友達の母親に初めてのフェラチオをされて.vtt">
+            3. tr02_友達の母親に初めてのフェラチオをされて
+        </li>
+    </ol>
+</article>
+
+<!-- Para un segundo post con playlist, copia y pega todo el bloque de arriba aquí -->
+
+<!-- ====================================================== -->
+<!-- ESTILOS Y SCRIPT (PONER SOLO UNA VEZ AL FINAL DE LA PÁGINA) -->
+<!-- ====================================================== -->
+<style>
+    /* Estilos para que la playlist se vea bien */
+    .playlist {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        overflow: hidden; /* Para que el borde redondeado aplique a los hijos */
     }
-    .plyr {
-      max-width: 600px;
-      margin: 2em auto;
+    .playlist-track {
+        padding: 12px 15px;
+        background-color: #2c2c2c;
+        border-bottom: 1px solid #444;
+        cursor: pointer;
+        transition: background-color 0.2s;
     }
-    video {
-      width: 100%;
-      height: auto;
+    .playlist-track:last-child {
+        border-bottom: none;
     }
-    h2 {
-      margin-top: 2em;
-      color: #ccc;
+    .playlist-track:hover {
+        background-color: #3e3e3e;
     }
-    ol.playlist {
-      list-style: decimal;
-      padding-left: 1.5em;
-      text-align: left;
-      max-width: 600px;
-      margin: 1em auto;
+    /* Esta clase se aplica con JS a la pista que está sonando */
+    .playlist-track.active {
+        background-color: #5a3a78; /* Un color de acento */
+        color: white;
+        font-weight: bold;
     }
-    ol.playlist li {
-      margin: 0.5em 0;
-    }
-    ol.playlist a {
-      color: #4db8ff;
-      text-decoration: none;
-    }
-    ol.playlist a.active {
-      font-weight: bold;
-      color: #fff;
-    }
-  </style>
-</head>
-<body>
+</style>
 
-  <h1>Audio narrativo subtitulado</h1>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Busca TODOS los contenedores de playlist en la página
+    const allPlaylists = document.querySelectorAll('.playlist-container');
 
-  <!-- Playlist 1 -->
-  <h2>Post 1: Serie A</h2>
-  <video id="playerA" controls crossorigin playsinline></video>
-  <ol id="playlistA" class="playlist">
-    <li><a href="#" data-video="video/RJ01152643HCSTRK1.mp4">Track 1: Serie A Cap 1</a></li>
-    <li><a href="#" data-video="video/RJ01152643HCSTRK2.mp4">Track 2: Serie A Cap 2</a></li>
-    <li><a href="#" data-video="video/RJ01152643HCSTRK3.mp4">Track 3: Serie A Cap 3</a></li>
-  </ol>
+    allPlaylists.forEach(container => {
+        // Dentro de cada contenedor, encuentra sus elementos específicos
+        const audioPlayer = container.querySelector('audio');
+        const subtitlesTrack = container.querySelector('track');
+        const playlistTracks = container.querySelectorAll('.playlist-track');
 
-  <!-- Playlist 2 -->
-  <h2>Post 2: Serie B</h2>
-  <video id="playerB" controls crossorigin playsinline></video>
-  <ol id="playlistB" class="playlist">
-    <li><a href="#" data-video="video/RJ272127HCS.mp4">Track 1: Serie B Cap 1</a></li>
-  </ol>
+        // Función para reproducir una pista
+        function playTrack(trackElement) {
+            // Obtiene las rutas del audio y subtítulos del elemento li
+            const audioSrc = trackElement.getAttribute('data-src');
+            const subtitlesSrc = trackElement.getAttribute('data-subtitles');
 
-  <!-- Playlist 3 -->
-  <h2>Post 3: Serie C</h2>
-  <video id="playerC" controls crossorigin playsinline></video>
-  <ol id="playlistC" class="playlist">
-    <li><a href="#" data-video="video/RJ272970HCS.mp4">Track 1: Serie C Cap 1</a></li>
-  </ol>
+            // Quita la clase 'active' de cualquier otra pista
+            playlistTracks.forEach(t => t.classList.remove('active'));
+            // Añade 'active' a la pista actual
+            trackElement.classList.add('active');
 
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script>
-    function initPlaylist(playerId, playlistId) {
-      const player = new Plyr('#' + playerId, {
-        captions: { active: true, update: true, language: 'es' }
-      });
-
-      const links = document.querySelectorAll('#' + playlistId + ' a');
-      let currentIndex = 0;
-
-      function loadTrack(index) {
-        const link = links[index];
-        if (!link) return;
-        links.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-
-        const videoFile = link.getAttribute('data-video');
-        const subsFile = link.getAttribute('data-subs');
-
-        player.source = {
-          type: 'video',
-          sources: [{ src: videoFile, type: 'video/mp4' }],
-          tracks: subsFile ? [{
-            kind: 'subtitles',
-            label: 'Español',
-            src: subsFile,
-            srclang: 'es',
-            default: true
-          }] : []
-        };
-
-        player.play();
-        currentIndex = index;
-      }
-
-      // Click manual
-      links.forEach((link, i) => {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          loadTrack(i);
-        });
-      });
-
-      // Autoplay siguiente
-      player.on('ended', () => {
-        if (currentIndex + 1 < links.length) {
-          loadTrack(currentIndex + 1);
+            // Actualiza el reproductor de audio
+            audioPlayer.src = audioSrc;
+            // Actualiza la fuente de los subtítulos
+            if (subtitlesTrack && subtitlesSrc) {
+                subtitlesTrack.src = subtitlesSrc;
+            }
+            
+            // Carga y reproduce el nuevo audio
+            audioPlayer.load();
+            audioPlayer.play();
         }
-      });
 
-      // Cargar primero al inicio
-      loadTrack(0);
-    }
+        // Añade un "listener" a cada pista de la lista
+        playlistTracks.forEach((track, index) => {
+            track.addEventListener('click', () => {
+                playTrack(track);
+            });
+        });
 
-    // Inicializar cada playlist
-    initPlaylist('playerA', 'playlistA');
-    initPlaylist('playerB', 'playlistB');
-    initPlaylist('playerC', 'playlistC');
-  </script>
-
-</body>
-</html>
+        // Listener para pasar a la siguiente pista automáticamente
+        audioPlayer.addEventListener('ended', function() {
+            const currentActive = container.querySelector('.playlist-track.active');
+            let nextTrack = currentActive.nextElementSibling;
+            
+            // Si no hay siguiente pista, no hace nada (o podría volver a la primera)
+            if (nextTrack && nextTrack.classList.contains('playlist-track')) {
+                playTrack(nextTrack);
+            }
+        });
+        
+        // Opcional: Cargar la primera pista al inicio sin reproducirla
+        if (playlistTracks.length > 0) {
+             const firstTrack = playlistTracks[0];
+             audioPlayer.src = firstTrack.getAttribute('data-src');
+             if (subtitlesTrack) {
+                 subtitlesTrack.src = firstTrack.getAttribute('data-subtitles');
+             }
+        }
+    });
+});
+</script>
