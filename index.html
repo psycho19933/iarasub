@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     body {
-      background-color: #111;
+      background-color: #000; /* Fondo negro */
       color: #eee;
       font-family: sans-serif;
       text-align: center;
@@ -21,8 +21,26 @@
       height: auto;
     }
     h2 {
-      margin-top: 3em;
+      margin-top: 2em;
       color: #ccc;
+    }
+    ol.playlist {
+      list-style: decimal;
+      padding-left: 1.5em;
+      text-align: left;
+      max-width: 600px;
+      margin: 1em auto;
+    }
+    ol.playlist li {
+      margin: 0.5em 0;
+    }
+    ol.playlist a {
+      color: #4db8ff;
+      text-decoration: none;
+    }
+    ol.playlist a.active {
+      font-weight: bold;
+      color: #fff;
     }
   </style>
 </head>
@@ -30,38 +48,88 @@
 
   <h1>Audio narrativo subtitulado</h1>
 
-  <h2>🔹 Muestra: RJ01215980</h2>
-  <video id="player1" controls crossorigin playsinline>
-    <source src="video/RJ01215980.mp4" type="video/mp4" />
-    <track kind="subtitles" label="Español" srclang="es" src="subtitulos/RJ01215980.vtt" default />
-  </video>
+  <!-- Playlist 1 -->
+  <h2>Post 1: Serie A</h2>
+  <video id="playerA" controls crossorigin playsinline></video>
+  <ol id="playlistA" class="playlist">
+    <li><a href="#" data-video="video/RJ01152643HCSTRK1.mp4">Track 1: Serie A Cap 1</a></li>
+    <li><a href="#" data-video="video/RJ01152643HCSTRK2.mp4">Track 2: Serie A Cap 2</a></li>
+    <li><a href="#" data-video="video/RJ01152643HCSTRK3.mp4">Track 3: Serie A Cap 3</a></li>
+  </ol>
 
-  <h2>🔹 Muestra: RJ272127HCS</h2>
-  <video id="player2" controls playsinline>
-    <source src="video/RJ272127HCS.mp4" type="video/mp4" />
-  </video>
+  <!-- Playlist 2 -->
+  <h2>Post 2: Serie B</h2>
+  <video id="playerB" controls crossorigin playsinline></video>
+  <ol id="playlistB" class="playlist">
+    <li><a href="#" data-video="video/RJ272127HCS.mp4">Track 1: Serie B Cap 1</a></li>
+  </ol>
 
-   <h2>🔹 Muestra: RJ272970HCS</h2>
-  <video id="player2" controls playsinline>
-    <source src="video/RJ272970HCS.mp4" type="video/mp4" />
-  </video>
+  <!-- Playlist 3 -->
+  <h2>Post 3: Serie C</h2>
+  <video id="playerC" controls crossorigin playsinline></video>
+  <ol id="playlistC" class="playlist">
+    <li><a href="#" data-video="video/RJ272970HCS.mp4">Track 1: Serie C Cap 1</a></li>
+  </ol>
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
-    const player1 = new Plyr('#player1', {
-      captions: { active: true, update: true, language: 'es' },
-      i18n: {
-        speed: 'Velocidad',
-        captions: 'Subtítulos',
-        disabled: 'Desactivar',
-        enabled: 'Activar',
-      }
-    });
-    const player2 = new Plyr('#player2');
-  </script>
+    function initPlaylist(playerId, playlistId) {
+      const player = new Plyr('#' + playerId, {
+        captions: { active: true, update: true, language: 'es' }
+      });
 
-</body>
-</html>
+      const links = document.querySelectorAll('#' + playlistId + ' a');
+      let currentIndex = 0;
+
+      function loadTrack(index) {
+        const link = links[index];
+        if (!link) return;
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        const videoFile = link.getAttribute('data-video');
+        const subsFile = link.getAttribute('data-subs');
+
+        player.source = {
+          type: 'video',
+          sources: [{ src: videoFile, type: 'video/mp4' }],
+          tracks: subsFile ? [{
+            kind: 'subtitles',
+            label: 'Español',
+            src: subsFile,
+            srclang: 'es',
+            default: true
+          }] : []
+        };
+
+        player.play();
+        currentIndex = index;
+      }
+
+      // Click manual
+      links.forEach((link, i) => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          loadTrack(i);
+        });
+      });
+
+      // Autoplay siguiente
+      player.on('ended', () => {
+        if (currentIndex + 1 < links.length) {
+          loadTrack(currentIndex + 1);
+        }
+      });
+
+      // Cargar primero al inicio
+      loadTrack(0);
+    }
+
+    // Inicializar cada playlist
+    initPlaylist('playerA', 'playlistA');
+    initPlaylist('playerB', 'playlistB');
+    initPlaylist('playerC', 'playlistC');
+  </script>
 
 </body>
 </html>
