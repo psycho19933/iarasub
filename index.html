@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Curatorial de ASMR Japonés</title>
 
-    <!-- ====================================================== -->
-    <!-- 1. ESTILOS CSS (Define la apariencia de la página)     -->
-    <!-- ====================================================== -->
+    <!-- 1. Cargar la biblioteca APlayer y sus estilos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+
+    <!-- Estilos generales de la página (opcional, para que se vea bien) -->
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -28,57 +30,10 @@
             padding-bottom: 10px;
         }
         .asmr-post {
-            background-color: #252525;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            margin-bottom: 40px;
         }
-        .asmr-post h2 {
-            margin-top: 0;
-            color: #fafafa;
-        }
-        .asmr-post p {
-            color: #b3b3b3;
-        }
-        audio {
-            width: 100%;
-            margin-top: 15px;
-            border-radius: 5px;
-        }
-        .playlist {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .playlist-track {
-            padding: 12px 15px;
-            background-color: #2c2c2c;
-            border-bottom: 1px solid #444;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .playlist-track:last-child {
-            border-bottom: none;
-        }
-        .playlist-track:hover {
-            background-color: #3e3e3e;
-        }
-        .playlist-track.active {
-            background-color: #5a3a78;
-            color: white;
-            font-weight: bold;
-        }
-        ::cue {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-size: 1.1em;
-            padding: 5px;
-        }
+        .asmr-post h2 { margin-bottom: 10px; }
+        .asmr-post p { margin-top: 0; color: #b3b3b3; }
     </style>
 </head>
 <body>
@@ -90,140 +45,52 @@
 
         <main>
 
-<!-- ====================================================== -->
-<!-- POST DE AUDIO CON PLAYLIST                             -->
-<!-- ====================================================== -->
-<article class="asmr-post playlist-container">
-    <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
-    <p>6 tracks.</p>
+            <section class="asmr-post">
+                <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
+                <p>6 tracks</p>
+                <!-- Contenedor vacío para el reproductor APlayer -->
+                <div id="player_kioto"></div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
 
-    <!-- 1. EL REPRODUCTOR DE AUDIO PRINCIPAL (SOLO HAY UNO) -->
-    <audio controls preload="metadata" style="width:100%;">
-        <!-- El track de subtítulos se cargará dinámicamente con JS -->
-        <track label="Español" kind="subtitles" srclang="es" src="" default>
-    </audio>
-
-    <!-- 2. LA LISTA DE PISTAS (LA PLAYLIST VISUAL) -->
-    <ol class="playlist">
-        <li class="playlist-track" 
-            data-src="audios/tr00_タイトルコール.opus" 
-            data-subtitles="subtitulos/tr00_タイトルコール.vtt">
-            1. tr00_タイトルコール
-        </li>
-        <li class="playlist-track" 
-            data-src="audios/tr01_友達の母親とお風呂に....opus" 
-            data-subtitles="subtitulos/tr01_友達の母親とお風呂に....vtt">
-            2. tr01_友達の母親とお風呂に...
-        </li>
-        <li class="playlist-track" 
-            data-src="audios/tr02_友達の母親に初めてのフェラチオをされて.opus" 
-            data-subtitles="subtitulos/tr02_友達の母親に初めてのフェラチオをされて.vtt">
-            3. tr02_友達の母親に初めてのフェラチオをされて
-        </li>
-        <li class="playlist-track" 
-            data-src="audios/tr03_友達の母親に夜這いされて.opus" 
-            data-subtitles="subtitulos/tr03_友達の母親に夜這いされて.vtt">
-            4. tr03_友達の母親に夜這いされて
-        </li>
-    </ol>
-</article>
-
-<!-- Para un segundo post con playlist, copia y pega todo el bloque de arriba aquí -->
-
-<!-- ====================================================== -->
-<!-- ESTILOS Y SCRIPT (PONER SOLO UNA VEZ AL FINAL DE LA PÁGINA) -->
-<!-- ====================================================== -->
-<style>
-    /* Estilos para que la playlist se vea bien */
-    .playlist {
-        list-style: none;
-        padding: 0;
-        margin-top: 15px;
-        border: 1px solid #444;
-        border-radius: 5px;
-        overflow: hidden; /* Para que el borde redondeado aplique a los hijos */
-    }
-    .playlist-track {
-        padding: 12px 15px;
-        background-color: #2c2c2c;
-        border-bottom: 1px solid #444;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-    .playlist-track:last-child {
-        border-bottom: none;
-    }
-    .playlist-track:hover {
-        background-color: #3e3e3e;
-    }
-    /* Esta clase se aplica con JS a la pista que está sonando */
-    .playlist-track.active {
-        background-color: #5a3a78; /* Un color de acento */
-        color: white;
-        font-weight: bold;
-    }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Busca TODOS los contenedores de playlist en la página
-    const allPlaylists = document.querySelectorAll('.playlist-container');
-
-    allPlaylists.forEach(container => {
-        // Dentro de cada contenedor, encuentra sus elementos específicos
-        const audioPlayer = container.querySelector('audio');
-        const subtitlesTrack = container.querySelector('track');
-        const playlistTracks = container.querySelectorAll('.playlist-track');
-
-        // Función para reproducir una pista
-        function playTrack(trackElement) {
-            // Obtiene las rutas del audio y subtítulos del elemento li
-            const audioSrc = trackElement.getAttribute('data-src');
-            const subtitlesSrc = trackElement.getAttribute('data-subtitles');
-
-            // Quita la clase 'active' de cualquier otra pista
-            playlistTracks.forEach(t => t.classList.remove('active'));
-            // Añade 'active' a la pista actual
-            trackElement.classList.add('active');
-
-            // Actualiza el reproductor de audio
-            audioPlayer.src = audioSrc;
-            // Actualiza la fuente de los subtítulos
-            if (subtitlesTrack && subtitlesSrc) {
-                subtitlesTrack.src = subtitlesSrc;
-            }
-            
-            // Carga y reproduce el nuevo audio
-            audioPlayer.load();
-            audioPlayer.play();
-        }
-
-        // Añade un "listener" a cada pista de la lista
-        playlistTracks.forEach((track, index) => {
-            track.addEventListener('click', () => {
-                playTrack(track);
-            });
+            const ap_RJ01152643 = new APlayer({
+            container: document.getElementById('player_kioto'),
+            theme: '#464646',
+            lrcType: 3,
+            audio: [
+                {
+                    name: '1. tr00_タイトルコール',
+                    artist: 'RJ01152643',
+                    // Rutas relativas para GitHub Pages
+                    url: 'audios/tr00_タイトルコール.opus',
+                    lrc: 'subtitulos/tr00_タイトルコール.lrc'
+                },
+                {
+                    name: '2. tr01_友達の母親とお風呂に...',
+                    artist: 'RJ01152643',
+                    // Rutas relativas para GitHub Pages
+                    url: 'audios/tr01_友達の母親とお風呂に....opus',
+                    lrc: 'subtitulos/tr01_友達の母親とお風呂に....lrc'
+                },
+                {
+                    name: '3. tr02_友達の母親に初めてのフェラチオをされて',
+                    artist: 'RJ01152643',
+                    // Rutas relativas para GitHub Pages
+                    url: 'audios/tr02_友達の母親に初めてのフェラチオをされて.opus',
+                    lrc: 'subtitulos/tr02_友達の母親に初めてのフェラチオをされて.lrc'
+                },
+                {
+                    name: '4. tr03_友達の母親に夜這いされて',
+                    artist: 'RJ01152643',
+                    // Rutas relativas para GitHub Pages
+                    url: 'audios/tr03_友達の母親に夜這いされて.opus',
+                    lrc: 'subtitulos/tr03_友達の母親に夜這いされて.lrc'
+                }
+            ]
         });
-
-        // Listener para pasar a la siguiente pista automáticamente
-        audioPlayer.addEventListener('ended', function() {
-            const currentActive = container.querySelector('.playlist-track.active');
-            let nextTrack = currentActive.nextElementSibling;
-            
-            // Si no hay siguiente pista, no hace nada (o podría volver a la primera)
-            if (nextTrack && nextTrack.classList.contains('playlist-track')) {
-                playTrack(nextTrack);
-            }
-        });
-        
-        // Opcional: Cargar la primera pista al inicio sin reproducirla
-        if (playlistTracks.length > 0) {
-             const firstTrack = playlistTracks[0];
-             audioPlayer.src = firstTrack.getAttribute('data-src');
-             if (subtitlesTrack) {
-                 subtitlesTrack.src = firstTrack.getAttribute('data-subtitles');
-             }
-        }
-    });
-});
-</script>
+    </script>
+</body>
+</html>
