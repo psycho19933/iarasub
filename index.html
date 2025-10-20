@@ -5,36 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Curatorial de ASMR Japonés</title>
 
-    <!-- 1. Cargar la biblioteca APlayer y sus estilos -->
+  <!-- Cargar la biblioteca APlayer y sus estilos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
 
-    <!-- Estilos generales de la página (opcional, para que se vea bien) -->
+    <!-- Estilos generales de la página -->
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 750px;
-            margin: 0 auto;
-        }
-        header h1 {
-            text-align: center;
-            color: #ffffff;
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-        }
-        .asmr-post {
-            margin-bottom: 40px;
-        }
-        .asmr-post h2 { margin-bottom: 10px; }
-        .asmr-post p { margin-top: 0; color: #b3b3b3; }
+        body { /* ... (estilos de siempre) ... */ }
+        /* ... (resto de estilos generales) ... */
     </style>
+
+    <!-- ====================================================== -->
+    <!-- NUEVO: Estilos Personalizados para APlayer             -->
+    <!-- ====================================================== -->
+    <style id="aplayer-custom-styles">
+        /* === 1. HACER LOS SUBTÍTULOS MÁS GRANDES === */
+        .aplayer .aplayer-lrc p {
+            font-size: 1.6em;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            color: #FFFFFF;
+        }
+
+        /* === 2. PERSONALIZAR COLORES DEL REPRODUCTOR === */
+        .aplayer { background: #282828; }
+        .aplayer .aplayer-list { background: #333333; }
+        .aplayer .aplayer-list li.aplayer-list-light { background: #5a3a78; border-color: #444; }
+        .aplayer .aplayer-list li { border-color: #444; }
+    </style>
+
 </head>
 <body>
 
@@ -67,6 +66,7 @@
                     // Rutas relativas para GitHub Pages
                     url: 'audios/tr00_タイトルコール.opus',
                     lrc: 'subtitulos/tr00_タイトルコール.lrc'
+                    cover: 'cover/RJ01152643.jpg'
                 },
                 {
                     name: '2. tr01_友達の母親とお風呂に...',
