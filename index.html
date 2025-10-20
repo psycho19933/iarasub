@@ -116,20 +116,20 @@
     </footer>
     
     <script>
-        // --- INICIO DEL CÓDIGO DE PRUEBA ---
-        console.log('Iniciando APlayer en MODO DE PRUEBA...');
+// --- INICIO DEL CÓDIGO DE PRUEBA (CORREGIDO) ---
+        console.log('Iniciando APlayer en MODO DE PRUEBA v2...');
 
         const ap = new APlayer({
             container: document.getElementById('player_RJ01152643'),
-            lrcType: 3,
+            // ¡ESTA ES LA CORRECCIÓN! Tipo 1 para usar el texto LRC directamente.
+            lrcType: 1, 
             audio: [
                 {
                     name: 'Prueba de Subtítulos',
                     artist: 'Test',
-                    // Un archivo de audio público para asegurar que funciona
                     url: 'https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3',
                     cover: 'covers/RJ01152643.jpg',
-                    // Subtítulos escritos directamente aquí para evitar errores de archivo
+                    // APlayer ahora leerá este texto directamente, sin buscar un archivo.
                     lrc: '[00:01.50]Hola\n[00:03.00]Este es un subtítulo de prueba\n[00:05.50]Si ves esto...\n[00:07.00]¡El sistema funciona!'
                 }
             ]
