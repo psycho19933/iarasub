@@ -4,47 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Curatorial de ASMR Japonés</title>
-
-    <!-- Cargar la biblioteca APlayer y sus estilos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
 
-    <!-- Estilos generales de la página -->
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1a1a1a; /* <-- FONDO OSCURO RESTAURADO */
-            color: #e0e0e0;
+            background-color: #f0f2f5;
+            color: #333;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
         }
-        .container { max-width: 750px; margin: 0 auto; }
-        header h1 { text-align: center; color: #ffffff; border-bottom: 2px solid #444; padding-bottom: 10px; }
-        .asmr-post { margin-bottom: 40px; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header h1 {
+            text-align: center;
+            color: #111;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .asmr-post {
+            margin-bottom: 40px;
+        }
         .asmr-post h2 { margin-bottom: 10px; }
-        .asmr-post p { margin-top: 0; color: #b3b3b3; }
+        .asmr-post p { margin-top: 0; color: #555; }
     </style>
 
-    <!-- CSS DEFINITIVO v3: Estilo Subtítulos de Película (Forzado) -->
-    <style id="aplayer-custom-styles">
-        .aplayer .aplayer-lrc {
-            position: fixed; bottom: 5%; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 1000px; text-align: center;
-            background: none; border: none; pointer-events: none;
+    <style id="aplayer-asmr-one-style">
+        .aplayer {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
         .aplayer .aplayer-lrc p {
-            font-size: 2em !important; font-weight: bold !important;
-            color: #FFFFFF !important;
-            background-color: rgba(0, 0, 0, 0.75) !important;
-            padding: 12px 22px !important; border-radius: 8px !important;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9) !important;
-            display: inline-block !important; margin-bottom: 8px !important;
-            opacity: 0; transition: opacity 0.3s ease-in-out;
-            pointer-events: auto;
+            font-size: 18px !important;
+            color: #666 !important;
+            line-height: 1.5 !important;
+            margin-bottom: 10px !important;
+            transition: all 0.3s ease;
         }
         .aplayer .aplayer-lrc p.aplayer-lrc-current {
-            opacity: 1;
+            font-size: 24px !important;
+            color: #000 !important;
+            font-weight: bold;
         }
     </style>
 </head>
