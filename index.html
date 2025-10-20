@@ -104,100 +104,102 @@
         <div id="lyricsBar"><span id="lyric"></span></div>
     </footer>
     
-    <script>
-        console.log('Iniciando script con MutationObserver...');
+  <script>
+    console.log('Iniciando script con MutationObserver v2 (modo preciso)...');
 
-        const ap = new APlayer({
-            container: document.getElementById('player_RJ01152643'),
-            theme: '#7e57c2',
-            lrcType: 3,
-            audio: [
-                 {
-                    name: '1. tr00_タイトルコール',
-                    artist: 'RJ01152643',
-                    url: 'audios/tr00_タイトルコール.opus',
-                    lrc: 'subtitulos/tr00_タイトルコール.lrc',
-                    cover: 'covers/RJ01152643.jpg'
-                },
-                {
-                    name: '2. tr01_友達の母親とお風呂に...',
-                    artist: 'RJ01152643',
-                    url: 'audios/tr01_友達の母親とお風呂に.opus',
-                    lrc: 'subtitulos/tr01_友達の母親とお風呂に.lrc',
-                    cover: 'covers/RJ01152643.jpg'
-                },
-                {
-                    name: '3. tr02_友達の母親に初めてのフェラチオをされて',
-                    artist: 'RJ01152643',
-                    url: 'audios/tr02_友達の母親に初めてのフェラチオをされて.opus',
-                    lrc: 'subtitulos/tr02_友達の母親に初めてのフェラチオをされて.lrc',
-                    cover: 'covers/RJ01152643.jpg'
-                },
-                {
-                    name: '4. tr03_友達の母親に夜這いされて',
-                    artist: 'RJ01152643',
-                    url: 'audios/tr03_友達の母親に夜這いされて.opus',
-                    lrc: 'subtitulos/tr03_友達の母親に夜這いされて.lrc',
-                    cover: 'covers/RJ01152643.jpg'
-                }
-            ]
-        });
+    const ap = new APlayer({
+        container: document.getElementById('player_RJ01152643'),
+        theme: '#7e57c2',
+        lrcType: 3,
+        audio: [
+             {
+                name: '1. tr00_タイトルコール',
+                artist: 'RJ01152643',
+                url: 'audios/tr00_タイトルコール.opus',
+                lrc: 'subtitulos/tr00_タイトルコール.lrc',
+                cover: 'covers/RJ01152643.jpg'
+            },
+            {
+                name: '2. tr01_友達の母親とお風呂に...',
+                artist: 'RJ01152643',
+                url: 'audios/tr01_友達の母親とお風呂に.opus',
+                lrc: 'subtitulos/tr01_友達の母親とお風呂に.lrc',
+                cover: 'covers/RJ01152643.jpg'
+            },
+            {
+                name: '3. tr02_友達の母親に初めてのフェラチオをされて',
+                artist: 'RJ01152643',
+                url: 'audios/tr02_友達の母親に初めてのフェラチオをされて.opus',
+                lrc: 'subtitulos/tr02_友達の母親に初めてのフェラチオをされて.lrc',
+                cover: 'covers/RJ01152643.jpg'
+            },
+            {
+                name: '4. tr03_友達の母親に夜這いされて',
+                artist: 'RJ01152643',
+                url: 'audios/tr03_友達の母親に夜這いされて.opus',
+                lrc: 'subtitulos/tr03_友達の母親に夜這いされて.lrc',
+                cover: 'covers/RJ01152643.jpg'
+            }
+        ]
+    });
 
-        const lyricsBar = document.getElementById('lyricsBar');
-        const lyricSpan = document.getElementById('lyric');
-        const toggleBtn = document.getElementById('subtitle-toggle-btn');
-        let subtitlesEnabled = false;
+    const lyricsBar = document.getElementById('lyricsBar');
+    const lyricSpan = document.getElementById('lyric');
+    const toggleBtn = document.getElementById('subtitle-toggle-btn');
+    let subtitlesEnabled = false;
 
-        toggleBtn.addEventListener('click', function() {
-            subtitlesEnabled = !subtitlesEnabled;
-            this.classList.toggle('active', subtitlesEnabled);
-            lyricsBar.classList.toggle('visible', subtitlesEnabled);
-            this.textContent = subtitlesEnabled ? 'Ocultar Subtítulos' : 'Mostrar Subtítulos';
-            if (!subtitlesEnabled) {
-                lyricSpan.textContent = '';
+    toggleBtn.addEventListener('click', function() {
+        subtitlesEnabled = !subtitlesEnabled;
+        this.classList.toggle('active', subtitlesEnabled);
+        lyricsBar.classList.toggle('visible', subtitlesEnabled);
+        this.textContent = subtitlesEnabled ? 'Ocultar Subtítulos' : 'Mostrar Subtítulos';
+        if (!subtitlesEnabled) {
+            lyricSpan.textContent = '';
+        } else {
+            // Al activar, actualiza inmediatamente con la línea actual si la hay
+            const currentLine = document.querySelector('#player_RJ01152643 .aplayer-lrc-current');
+            if (currentLine) {
+                lyricSpan.textContent = currentLine.textContent;
+            }
+        }
+    });
+
+    // --- LÓGICA MEJORADA CON MUTATIONOBSERVER ---
+
+    ap.on('canplay', function () {
+        console.log('Reproductor listo. Iniciando el observador de atributos.');
+
+        const aplayerLrcContainer = document.querySelector('#player_RJ01152643 .aplayer-lrc');
+
+        if (!aplayerLrcContainer) {
+            console.error('No se pudo encontrar el contenedor de subtítulos de APlayer.');
+            return;
+        }
+
+        const observer = new MutationObserver((mutationsList) => {
+            // No necesitamos iterar, el resultado es el mismo.
+            // Buscamos directamente el elemento con la clase 'current'.
+            const currentLine = aplayerLrcContainer.querySelector('.aplayer-lrc-current');
+            
+            // Si encontramos una línea activa, obtenemos su texto. Si no, es un string vacío.
+            const newText = currentLine ? currentLine.textContent : '';
+
+            // Solo actualizamos si el texto es diferente al que ya tenemos, para evitar parpadeos
+            if (subtitlesEnabled && lyricSpan.textContent !== newText) {
+                console.log('Observador detectó nueva línea:', newText);
+                lyricSpan.textContent = newText;
             }
         });
 
-        // --- LA NUEVA LÓGICA CON MUTATIONOBSERVER ---
-
-        // 1. Esperamos a que el reproductor esté listo
-        ap.on('canplay', function () {
-            console.log('Reproductor listo. Iniciando el observador de subtítulos.');
-
-            // 2. Localizamos el panel de subtítulos de APlayer
-            const aplayerLrcContainer = document.querySelector('#player_RJ01152643 .aplayer-lrc');
-
-            if (!aplayerLrcContainer) {
-                console.error('No se pudo encontrar el contenedor de subtítulos de APlayer (.aplayer-lrc).');
-                return;
-            }
-
-            // 3. Creamos el observador
-            const observer = new MutationObserver((mutationsList) => {
-                // Iteramos sobre los cambios detectados (normalmente será solo uno)
-                for (const mutation of mutationsList) {
-                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                        // Obtenemos el texto actual del panel de APlayer
-                        const newText = aplayerLrcContainer.textContent || '';
-                        
-                        console.log('Observador detectó un cambio:', newText);
-
-                        // Si los subtítulos están activados, lo mostramos en nuestra barra
-                        if (subtitlesEnabled) {
-                            lyricSpan.textContent = newText;
-                        }
-                    }
-                }
-            });
-
-            // 4. Le decimos al observador qué espiar
-            observer.observe(aplayerLrcContainer, {
-                childList: true,      // Espiar si se añaden/quitan elementos hijos (como los <p> de cada línea)
-                subtree: true,        // Espiar también a los nietos y más allá
-                characterData: true   // Espiar si cambia el texto dentro de los elementos
-            });
+        // Le decimos al observador que espíe CUALQUIER cambio en el panel y sus hijos.
+        // La opción 'attributes' es clave para detectar el cambio de la clase 'aplayer-lrc-current'.
+        observer.observe(aplayerLrcContainer, {
+            childList: true,
+            subtree: true,
+            attributes: true, 
+            attributeFilter: ['class'] // Nos enfocamos solo en cambios de clase para ser eficientes
         });
-
-    </script>
+    });
+</script>
 </body>
 </html>
