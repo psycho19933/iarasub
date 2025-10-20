@@ -46,20 +46,33 @@
         }
     </style>
 
-    <style id="custom-subtitle-style">
+    <style id="lyrics-bar-style">
         .aplayer .aplayer-lrc {
             display: none !important;
         }
 
-        #custom-subtitle-display {
+        #lyricsBar {
             position: fixed;
             bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 1000px;
+            width: auto;
+            max-width: 90%;
             text-align: center;
             pointer-events: none;
+            
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        #lyricsBar.visible {
+           visibility: visible;
+           opacity: 1;
+        }
+
+        #lyric {
+            display: inline-block;
             font-size: 2.2em;
             font-weight: bold;
             color: #FFFFFF;
@@ -67,18 +80,6 @@
             padding: 12px 22px;
             border-radius: 8px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
-        }
-        
-        #custom-subtitle-display.active {
-           visibility: visible;
-           transition: opacity 0.3s ease-in-out;
-        }
-
-        #custom-subtitle-display.visible {
-            opacity: 1;
         }
     </style>
 </head>
@@ -100,7 +101,11 @@
         </main>
     </div>
 
-    <div id="custom-subtitle-display"></div>
+    <footer class="q-footer">
+        <div id="lyricsBar">
+            <span id="lyric"></span>
+        </div>
+    </footer>
     
     <script>
         const ap = new APlayer({
@@ -139,7 +144,8 @@
             ]
         });
 
-        const subtitleDisplay = document.getElementById('custom-subtitle-display');
+        const lyricsBar = document.getElementById('lyricsBar');
+        const lyricSpan = document.getElementById('lyric');
         const toggleBtn = document.getElementById('subtitle-toggle-btn');
         let subtitlesEnabled = false;
 
@@ -148,25 +154,24 @@
             if (subtitlesEnabled) {
                 this.textContent = 'Ocultar Subtítulos';
                 this.classList.add('active');
-                subtitleDisplay.classList.add('active');
+                lyricsBar.classList.add('visible');
             } else {
                 this.textContent = 'Mostrar Subtítulos';
                 this.classList.remove('active');
-                subtitleDisplay.classList.remove('active');
-                subtitleDisplay.classList.remove('visible');
+                lyricsBar.classList.remove('visible');
+                lyricSpan.textContent = '';
             }
         });
 
         ap.on('lrcshow', function (data) {
             if (subtitlesEnabled) {
-                subtitleDisplay.textContent = data.text;
-                subtitleDisplay.classList.add('visible');
+                lyricSpan.textContent = data.text;
             }
         });
 
         ap.on('lrchide', function () {
             if (subtitlesEnabled) {
-                subtitleDisplay.classList.remove('visible');
+                lyricSpan.textContent = '';
             }
         });
     </script>
