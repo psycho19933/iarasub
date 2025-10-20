@@ -31,12 +31,26 @@
         }
         .asmr-post h2 { margin-bottom: 10px; }
         .asmr-post p { margin-top: 0; color: #555; }
+        .controls { margin-top: 15px; }
+        .toggle-subtitle-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .toggle-subtitle-btn.active {
+            background-color: #7e57c2;
+        }
     </style>
 
     <style id="custom-subtitle-style">
         .aplayer .aplayer-lrc {
             display: none !important;
         }
+
         #custom-subtitle-display {
             position: fixed;
             bottom: 5%;
@@ -54,13 +68,19 @@
             border-radius: 8px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
         }
+        
+        #custom-subtitle-display.active {
+           visibility: visible;
+           transition: opacity 0.3s ease-in-out;
+        }
+
         #custom-subtitle-display.visible {
             opacity: 1;
         }
     </style>
-    
 </head>
 <body>
     <div class="container">
@@ -73,6 +93,9 @@
                 <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
                 <p>6 tracks</p>
                 <div id="player_RJ01152643"></div>
+                <div class="controls">
+                    <button id="subtitle-toggle-btn" class="toggle-subtitle-btn">Mostrar Subtítulos</button>
+                </div>
             </section>
         </main>
     </div>
@@ -82,7 +105,7 @@
     <script>
         const ap = new APlayer({
             container: document.getElementById('player_RJ01152643'),
-            theme: '#464646',
+            theme: '#7e57c2',
             lrcType: 3,
             audio: [
                 {
@@ -115,19 +138,37 @@
                 }
             ]
         });
-        
+
         const subtitleDisplay = document.getElementById('custom-subtitle-display');
+        const toggleBtn = document.getElementById('subtitle-toggle-btn');
+        let subtitlesEnabled = false;
+
+        toggleBtn.addEventListener('click', function() {
+            subtitlesEnabled = !subtitlesEnabled;
+            if (subtitlesEnabled) {
+                this.textContent = 'Ocultar Subtítulos';
+                this.classList.add('active');
+                subtitleDisplay.classList.add('active');
+            } else {
+                this.textContent = 'Mostrar Subtítulos';
+                this.classList.remove('active');
+                subtitleDisplay.classList.remove('active');
+                subtitleDisplay.classList.remove('visible');
+            }
+        });
 
         ap.on('lrcshow', function (data) {
-            subtitleDisplay.textContent = data.text;
-            subtitleDisplay.classList.add('visible');
+            if (subtitlesEnabled) {
+                subtitleDisplay.textContent = data.text;
+                subtitleDisplay.classList.add('visible');
+            }
         });
 
         ap.on('lrchide', function () {
-            subtitleDisplay.classList.remove('visible');
+            if (subtitlesEnabled) {
+                subtitleDisplay.classList.remove('visible');
+            }
         });
-
     </script>
 </body>
-</html>
 </html>
