@@ -46,9 +46,14 @@
         }
     </style>
 
-    <style id="lyrics-bar-style">
+    <style id="custom-subtitle-style">
+        /* ESTA ES LA CORRECCIÓN CRÍTICA */
         .aplayer .aplayer-lrc {
-            display: none !important;
+            /* En lugar de 'display: none', lo hacemos invisible de otra forma */
+            height: 0 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
         }
 
         #lyricsBar {
