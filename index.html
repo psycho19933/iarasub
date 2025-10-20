@@ -31,16 +31,14 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* --- LA SOLUCIÓN DEFINITIVA DE CSS --- */
-        /*
-           En lugar de ocultar el panel de APlayer, lo movemos fuera de la pantalla.
-           De esta forma, APlayer cree que es visible y procesa los eventos,
-           pero el usuario nunca lo ve.
-        */
+        /* Dejamos el panel de APlayer "vivo" pero lo sacamos de la pantalla. */
         .aplayer .aplayer-lrc {
             position: absolute !important;
             left: -9999px !important;
             top: -9999px !important;
+            /* Le damos un tamaño para que APlayer no se queje */
+            width: 100px;
+            height: 50px;
         }
 
         #lyricsBar {
@@ -90,10 +88,7 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Mi Colección de ASMR Japonés</h1>
-        </header>
-
+        <header><h1>Mi Colección de ASMR Japonés</h1></header>
         <main>
             <section class="asmr-post">
                 <h2>Con semejante tremendo tamaño…♪♪</h2>
@@ -105,23 +100,19 @@
             </section>
         </main>
     </div>
-
     <footer>
-        <div id="lyricsBar">
-            <span id="lyric"></span>
-        </div>
+        <div id="lyricsBar"><span id="lyric"></span></div>
     </footer>
     
     <script>
-        console.log('Iniciando script del reproductor (vFinal)...');
+        console.log('Iniciando script con MutationObserver...');
 
-        // Volvemos a tu configuración original, porque el problema era el CSS.
         const ap = new APlayer({
             container: document.getElementById('player_RJ01152643'),
             theme: '#7e57c2',
-            lrcType: 3, // Tipo 3 porque estamos cargando archivos .lrc desde una URL
+            lrcType: 3,
             audio: [
-                {
+                 {
                     name: '1. tr00_タイトルコール',
                     artist: 'RJ01152643',
                     url: 'audios/tr00_タイトルコール.opus',
@@ -159,38 +150,54 @@
 
         toggleBtn.addEventListener('click', function() {
             subtitlesEnabled = !subtitlesEnabled;
-            console.log('Botón presionado. Subtítulos habilitados:', subtitlesEnabled);
-
-            if (subtitlesEnabled) {
-                this.textContent = 'Ocultar Subtítulos';
-                this.classList.add('active');
-                lyricsBar.classList.add('visible');
-            } else {
-                this.textContent = 'Mostrar Subtítulos';
-                this.classList.remove('active');
-                lyricsBar.classList.remove('visible');
+            this.classList.toggle('active', subtitlesEnabled);
+            lyricsBar.classList.toggle('visible', subtitlesEnabled);
+            this.textContent = subtitlesEnabled ? 'Ocultar Subtítulos' : 'Mostrar Subtítulos';
+            if (!subtitlesEnabled) {
                 lyricSpan.textContent = '';
             }
         });
 
-        // Eventos de APlayer con diagnósticos
-        ap.on('lrcshow', function (data) {
-            console.log('Evento lrcshow detectado. Texto:', data.text);
-            if (subtitlesEnabled) {
-                lyricSpan.textContent = data.text;
+        // --- LA NUEVA LÓGICA CON MUTATIONOBSERVER ---
+
+        // 1. Esperamos a que el reproductor esté listo
+        ap.on('canplay', function () {
+            console.log('Reproductor listo. Iniciando el observador de subtítulos.');
+
+            // 2. Localizamos el panel de subtítulos de APlayer
+            const aplayerLrcContainer = document.querySelector('#player_RJ01152643 .aplayer-lrc');
+
+            if (!aplayerLrcContainer) {
+                console.error('No se pudo encontrar el contenedor de subtítulos de APlayer (.aplayer-lrc).');
+                return;
             }
+
+            // 3. Creamos el observador
+            const observer = new MutationObserver((mutationsList) => {
+                // Iteramos sobre los cambios detectados (normalmente será solo uno)
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                        // Obtenemos el texto actual del panel de APlayer
+                        const newText = aplayerLrcContainer.textContent || '';
+                        
+                        console.log('Observador detectó un cambio:', newText);
+
+                        // Si los subtítulos están activados, lo mostramos en nuestra barra
+                        if (subtitlesEnabled) {
+                            lyricSpan.textContent = newText;
+                        }
+                    }
+                }
+            });
+
+            // 4. Le decimos al observador qué espiar
+            observer.observe(aplayerLrcContainer, {
+                childList: true,      // Espiar si se añaden/quitan elementos hijos (como los <p> de cada línea)
+                subtree: true,        // Espiar también a los nietos y más allá
+                characterData: true   // Espiar si cambia el texto dentro de los elementos
+            });
         });
 
-        ap.on('lrchide', function () {
-            console.log('Evento lrchide detectado.');
-            if (subtitlesEnabled) {
-                lyricSpan.textContent = '';
-            }
-        });
-        
-        ap.on('loadeddata', function() {
-            console.log('Datos de audio y LRC cargados exitosamente.');
-        });
     </script>
 </body>
 </html>
