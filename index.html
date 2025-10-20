@@ -37,7 +37,6 @@
         .aplayer .aplayer-lrc {
             display: none !important;
         }
-
         #custom-subtitle-display {
             position: fixed;
             bottom: 5%;
@@ -47,7 +46,6 @@
             max-width: 1000px;
             text-align: center;
             pointer-events: none;
-            
             font-size: 2.2em;
             font-weight: bold;
             color: #FFFFFF;
@@ -55,11 +53,9 @@
             padding: 12px 22px;
             border-radius: 8px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
-
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         }
-        
         #custom-subtitle-display.visible {
             opacity: 1;
         }
@@ -73,12 +69,10 @@
         </header>
 
         <main>
-
             <section class="asmr-post">
                 <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
                 <p>6 tracks</p>
-                <!-- Contenedor vacío para el reproductor APlayer -->
-                <div id="player_kioto"></div>
+                <div id="player_RJ01152643"></div>
             </section>
         </main>
     </div>
@@ -86,40 +80,38 @@
     <div id="custom-subtitle-display"></div>
     
     <script>
-
-            const ap_RJ01152643 = new APlayer({
-            container: document.getElementById('player_kioto'),
+        const ap = new APlayer({
+            container: document.getElementById('player_RJ01152643'),
             theme: '#464646',
             lrcType: 3,
             audio: [
                 {
                     name: '1. tr00_タイトルコール',
                     artist: 'RJ01152643',
-                    // Rutas relativas para GitHub Pages
                     url: 'audios/tr00_タイトルコール.opus',
                     lrc: 'subtitulos/tr00_タイトルコール.lrc',
-                    cover: 'cover/RJ01152643.jpg'
+                    cover: 'covers/RJ01152643.jpg'
                 },
                 {
                     name: '2. tr01_友達の母親とお風呂に...',
                     artist: 'RJ01152643',
-                    // Rutas relativas para GitHub Pages
                     url: 'audios/tr01_友達の母親とお風呂に.opus',
-                    lrc: 'subtitulos/tr01_友達の母親とお風呂に.lrc'
+                    lrc: 'subtitulos/tr01_友達の母親とお風呂に.lrc',
+                    cover: 'covers/RJ01152643.jpg'
                 },
                 {
                     name: '3. tr02_友達の母親に初めてのフェラチオをされて',
                     artist: 'RJ01152643',
-                    // Rutas relativas para GitHub Pages
                     url: 'audios/tr02_友達の母親に初めてのフェラチオをされて.opus',
-                    lrc: 'subtitulos/tr02_友達の母親に初めてのフェラチオをされて.lrc'
+                    lrc: 'subtitulos/tr02_友達の母親に初めてのフェラチオをされて.lrc',
+                    cover: 'covers/RJ01152643.jpg'
                 },
                 {
                     name: '4. tr03_友達の母親に夜這いされて',
                     artist: 'RJ01152643',
-                    // Rutas relativas para GitHub Pages
                     url: 'audios/tr03_友達の母親に夜這いされて.opus',
-                    lrc: 'subtitulos/tr03_友達の母親に夜這いされて.lrc'
+                    lrc: 'subtitulos/tr03_友達の母親に夜這いされて.lrc',
+                    cover: 'covers/RJ01152643.jpg'
                 }
             ]
         });
@@ -137,4 +129,5 @@
 
     </script>
 </body>
+</html>
 </html>
