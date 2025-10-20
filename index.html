@@ -16,6 +16,70 @@
     </style>
 
     <!-- ====================================================== -->
+<!-- NUEVO: Estilos Avanzados para Subtítulos de Película   -->
+<!-- ====================================================== -->
+<style id="aplayer-custom-styles">
+    /* === 1. CONFIGURACIÓN GENERAL DEL REPRODUCTOR (Opcional) === */
+    .aplayer {
+        /* Mantenemos un fondo base para el reproductor en sí */
+        background: #282828 !important; 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* === 2. "LIBERAR" Y POSICIONAR EL CONTENEDOR DE SUBTÍTULOS === */
+    .aplayer .aplayer-lrc {
+        /* Fija el contenedor a la ventana del navegador */
+        position: fixed;
+        /* Lo posiciona en la parte inferior */
+        bottom: 30px; 
+        /* Truco para centrarlo horizontalmente */
+        left: 50%;
+        transform: translateX(-50%);
+        
+        /* Ajustes de tamaño y apariencia */
+        width: 80%; /* Ocupará el 80% del ancho de la pantalla */
+        max-width: 900px; /* Pero no más de 900px en pantallas grandes */
+        
+        /* Hacemos el contenedor invisible y lo quitamos del flujo */
+        background: none;
+        border: none;
+        text-align: center;
+        
+        /* IMPORTANTE: Evita que el contenedor bloquee clics en elementos que estén detrás */
+        pointer-events: none;
+    }
+
+    /* === 3. ESTILIZAR CADA LÍNEA DE SUBTÍTULO === */
+    .aplayer .aplayer-lrc p {
+        /* Tamaño y color de la fuente */
+        font-size: 2em;  /* ¡Más grande! Ajusta este valor a tu gusto */
+        font-weight: bold;
+        color: #FFFFFF;
+        
+        /* El fondo semitransparente de "película" */
+        background-color: rgba(0, 0, 0, 0.65);
+        
+        /* Espaciado y bordes redondeados */
+        padding: 10px 20px;
+        border-radius: 6px;
+        
+        /* Sombra para que el texto resalte aún más */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+
+        /* Hacemos que cada subtítulo sea un bloque independiente */
+        display: inline-block;
+        margin: 0;
+
+        /* Re-activamos los clics solo para el texto, si fuera necesario */
+        pointer-events: auto;
+    }
+    
+    /* APlayer oculta las líneas inactivas. Si quisiéramos forzarlo, podríamos usar esto: */
+    .aplayer .aplayer-lrc p:not(.aplayer-lrc-current) {
+        /* display: none !important; */ /* (No suele ser necesario, APlayer ya lo gestiona) */
+    }
+</style>
+    <!-- ====================================================== -->
     <!-- NUEVO: Estilos Personalizados para APlayer             -->
     <!-- ====================================================== -->
     <style id="aplayer-custom-styles">
