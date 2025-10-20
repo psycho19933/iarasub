@@ -19,64 +19,57 @@
 <!-- NUEVO: Estilos Avanzados para Subtítulos de Película   -->
 <!-- ====================================================== -->
 <style id="aplayer-custom-styles">
-    /* === 1. CONFIGURACIÓN GENERAL DEL REPRODUCTOR (Opcional) === */
-    .aplayer {
-        /* Mantenemos un fondo base para el reproductor en sí */
-        background: #282828 !important; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    /* === 2. "LIBERAR" Y POSICIONAR EL CONTENEDOR DE SUBTÍTULOS === */
+    /* === 1. POSICIONAR EL CONTENEDOR GENERAL DE SUBTÍTULOS === */
     .aplayer .aplayer-lrc {
-        /* Fija el contenedor a la ventana del navegador */
+        /* Lo fijamos en la parte inferior de la pantalla */
         position: fixed;
-        /* Lo posiciona en la parte inferior */
-        bottom: 30px; 
-        /* Truco para centrarlo horizontalmente */
+        bottom: 5%; /* Un poco más arriba para que no esté pegado al borde */
         left: 50%;
         transform: translateX(-50%);
         
-        /* Ajustes de tamaño y apariencia */
-        width: 80%; /* Ocupará el 80% del ancho de la pantalla */
-        max-width: 900px; /* Pero no más de 900px en pantallas grandes */
-        
-        /* Hacemos el contenedor invisible y lo quitamos del flujo */
-        background: none;
-        border: none;
+        /* Ajustes de tamaño y alineación */
+        width: 90%;
+        max-width: 1000px; /* Ancho máximo en pantallas grandes */
         text-align: center;
         
-        /* IMPORTANTE: Evita que el contenedor bloquee clics en elementos que estén detrás */
+        /* Hacemos el contenedor invisible, solo nos importa su contenido */
+        background: none;
+        border: none;
+        
+        /* MUY IMPORTANTE: Evita que el contenedor invisible bloquee los clics */
         pointer-events: none;
     }
 
-    /* === 3. ESTILIZAR CADA LÍNEA DE SUBTÍTULO === */
+    /* === 2. ESTILIZAR TODAS LAS LÍNEAS DE SUBTÍTULOS === */
     .aplayer .aplayer-lrc p {
-        /* Tamaño y color de la fuente */
-        font-size: 2em;  /* ¡Más grande! Ajusta este valor a tu gusto */
+        /* Estilos visuales: fondo, color, fuente, etc. */
+        font-size: 2.2em; /* ¡Aún más grande! Ajusta a tu gusto */
         font-weight: bold;
         color: #FFFFFF;
+        background-color: rgba(0, 0, 0, 0.75); /* Fondo un poco más oscuro */
+        padding: 12px 22px;
+        border-radius: 8px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
         
-        /* El fondo semitransparente de "película" */
-        background-color: rgba(0, 0, 0, 0.65);
-        
-        /* Espaciado y bordes redondeados */
-        padding: 10px 20px;
-        border-radius: 6px;
-        
-        /* Sombra para que el texto resalte aún más */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-
-        /* Hacemos que cada subtítulo sea un bloque independiente */
+        /* Hacemos que el fondo se ajuste al texto */
         display: inline-block;
-        margin: 0;
+        margin-bottom: 8px; /* Espacio entre líneas si un subtítulo tuviera dos renglones */
 
-        /* Re-activamos los clics solo para el texto, si fuera necesario */
+        /* ----- LA MAGIA ESTÁ AQUÍ ----- */
+        /* 1. Hacemos TODAS las líneas invisibles por defecto */
+        opacity: 0;
+        
+        /* 2. Preparamos una transición suave para cuando cambie la opacidad */
+        transition: opacity 0.3s ease-in-out;
+        
+        /* Re-activamos los clics para el texto por si acaso */
         pointer-events: auto;
     }
-    
-    /* APlayer oculta las líneas inactivas. Si quisiéramos forzarlo, podríamos usar esto: */
-    .aplayer .aplayer-lrc p:not(.aplayer-lrc-current) {
-        /* display: none !important; */ /* (No suele ser necesario, APlayer ya lo gestiona) */
+
+    /* === 3. MOSTRAR ÚNICAMENTE LA LÍNEA DE SUBTÍTULO ACTIVA === */
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        /* 3. Hacemos visible SOLO la línea que tiene la clase "current" */
+        opacity: 1;
     }
 </style>
     <!-- ====================================================== -->
