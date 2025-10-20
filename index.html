@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Curatorial de ASMR Japonés</title>
-    <!-- 1. Cargar APlayer desde un CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+
     <style>
-        /* Estilos generales */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
@@ -32,33 +31,35 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* --- ESTILOS CLAVE PARA LOS SUBTÍTULOS --- */
-        
-        /* 2. Ocultamos el panel de subtítulos original de APlayer.
-           Tu método original era bueno, pero a veces `display: none` es más seguro
-           para evitar que ocupe espacio o interfiera. */
+        /* --- CORRECCIÓN CRÍTICA EN CSS --- */
+        /*
+           Volvemos al método de ocultar el panel de letras original de APlayer
+           haciéndolo invisible y de altura cero, en lugar de usar 'display: none'.
+           Esto mantiene el elemento en el DOM, permitiendo que los eventos de APlayer sigan funcionando.
+        */
         .aplayer .aplayer-lrc {
-            display: none !important;
+            height: 0 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        /* 3. Estilos para la barra de subtítulos personalizada en el footer */
         #lyricsBar {
-            position: fixed; /* Lo fijamos en la pantalla */
+            position: fixed;
             bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
             width: auto;
             max-width: 90%;
             text-align: center;
-            pointer-events: none; /* Para que no se pueda hacer clic en la barra */
-            
-            /* Transición para que aparezca y desaparezca suavemente */
+            pointer-events: none;
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.3s, visibility 0.3s;
         }
         
-        /* 4. Clase 'visible' que activaremos con JavaScript */
         #lyricsBar.visible {
            visibility: visible;
            opacity: 1;
@@ -75,7 +76,6 @@
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
         }
 
-        /* Estilos para el botón de control */
         .controls { margin-top: 15px; }
         .toggle-subtitle-btn {
             background-color: #6c757d;
@@ -87,7 +87,7 @@
             font-size: 14px;
         }
         .toggle-subtitle-btn.active {
-            background-color: #7e57c2; /* Un color que indica que está activo */
+            background-color: #7e57c2;
         }
     </style>
 </head>
@@ -99,7 +99,7 @@
 
         <main>
             <section class="asmr-post">
-                <h2>Con semejante tremendo tamaño… esta señora, a pesar de su edad, no puede evitar que el corazón le palpite…♪♪</h2>
+                <h2>Con semejante tremendo tamaño…♪♪</h2>
                 <p>4 tracks</p>
                 <div id="player_RJ01152643"></div>
                 <div class="controls">
@@ -109,25 +109,20 @@
         </main>
     </div>
 
-    <!-- 5. Footer para nuestra barra de subtítulos personalizada -->
     <footer>
         <div id="lyricsBar">
-            <span id="lyric">Aquí aparecerán los subtítulos...</span>
+            <span id="lyric"></span>
         </div>
     </footer>
     
     <script>
-        // --- LÓGICA JAVASCRIPT CLAVE ---
-        
-        // 6. Inicialización de APlayer
+        console.log('Iniciando script del reproductor...');
+
         const ap = new APlayer({
             container: document.getElementById('player_RJ01152643'),
             theme: '#7e57c2',
-            lrcType: 3, // Fundamental para que APlayer procese los archivos .lrc
+            lrcType: 3,
             audio: [
-                // ¡IMPORTANTE! Asegúrate de que las rutas 'url' y 'lrc' sean correctas
-                // en tu servidor de GitHub Pages. Un error 404 (archivo no encontrado)
-                // aquí es la causa más común de que los subtítulos no funcionen.
                 {
                     name: '1. tr00_タイトルコール',
                     artist: 'RJ01152643',
@@ -159,55 +154,46 @@
             ]
         });
 
-        // 7. Referencias a los elementos del DOM
         const lyricsBar = document.getElementById('lyricsBar');
         const lyricSpan = document.getElementById('lyric');
         const toggleBtn = document.getElementById('subtitle-toggle-btn');
-        
-        // Variable para guardar el estado (subtítulos activados/desactivados)
         let subtitlesEnabled = false;
 
-        // 8. Lógica del botón para mostrar/ocultar subtítulos
         toggleBtn.addEventListener('click', function() {
-            subtitlesEnabled = !subtitlesEnabled; // Invierte el estado
+            subtitlesEnabled = !subtitlesEnabled;
             
+            console.log('Botón presionado. Subtítulos habilitados:', subtitlesEnabled);
+
             if (subtitlesEnabled) {
-                // Si se activan los subtítulos
                 this.textContent = 'Ocultar Subtítulos';
-                this.classList.add('active'); // Estilo visual de "activo"
+                this.classList.add('active');
                 lyricsBar.classList.add('visible');
             } else {
-                // Si se desactivan los subtítulos
                 this.textContent = 'Mostrar Subtítulos';
                 this.classList.remove('active');
                 lyricsBar.classList.remove('visible');
-                lyricSpan.textContent = ''; // Limpiamos el texto al ocultar
+                lyricSpan.textContent = '';
             }
         });
 
-        // 9. Eventos de APlayer para sincronizar los subtítulos
-        
-        // Se dispara cuando una nueva línea de subtítulo debe mostrarse
+        // Eventos de APlayer con diagnósticos
         ap.on('lrcshow', function (data) {
-            // Solo actualizamos el texto si los subtítulos están habilitados
+            console.log('Evento lrcshow detectado. Texto:', data.text);
             if (subtitlesEnabled) {
                 lyricSpan.textContent = data.text;
             }
         });
 
-        // Se dispara cuando no hay ninguna línea de subtítulo que mostrar
         ap.on('lrchide', function () {
-            // Limpiamos el texto si los subtítulos están habilitados
+            console.log('Evento lrchide detectado.');
             if (subtitlesEnabled) {
                 lyricSpan.textContent = '';
             }
         });
         
-        // Evento extra: Limpiar subtítulos al cambiar de canción
-        ap.on('play', function() {
-            if (!subtitlesEnabled) {
-                lyricSpan.textContent = '';
-            }
+        // Mensaje de éxito al cargar los datos del audio
+        ap.on('loadeddata', function() {
+            console.log('Datos de audio y LRC cargados exitosamente.');
         });
 
     </script>
