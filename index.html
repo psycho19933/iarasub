@@ -33,24 +33,38 @@
         .asmr-post p { margin-top: 0; color: #555; }
     </style>
 
-    <style id="aplayer-asmr-one-style">
-        .aplayer {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 1px solid #e0e0e0;
+    <style id="custom-subtitle-style">
+        .aplayer .aplayer-lrc {
+            display: none !important;
         }
-        .aplayer .aplayer-lrc p {
-            font-size: 18px !important;
-            color: #666 !important;
-            line-height: 1.5 !important;
-            margin-bottom: 10px !important;
-            transition: all 0.3s ease;
-        }
-        .aplayer .aplayer-lrc p.aplayer-lrc-current {
-            font-size: 24px !important;
-            color: #000 !important;
+
+        #custom-subtitle-display {
+            position: fixed;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+            pointer-events: none;
+            
+            font-size: 2.2em;
             font-weight: bold;
+            color: #FFFFFF;
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #custom-subtitle-display.visible {
+            opacity: 1;
         }
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -68,6 +82,8 @@
             </section>
         </main>
     </div>
+
+    <div id="custom-subtitle-display"></div>
     
     <script>
 
@@ -107,6 +123,18 @@
                 }
             ]
         });
+        
+        const subtitleDisplay = document.getElementById('custom-subtitle-display');
+
+        ap.on('lrcshow', function (data) {
+            subtitleDisplay.textContent = data.text;
+            subtitleDisplay.classList.add('visible');
+        });
+
+        ap.on('lrchide', function () {
+            subtitleDisplay.classList.remove('visible');
+        });
+
     </script>
 </body>
 </html>
