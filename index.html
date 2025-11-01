@@ -224,6 +224,114 @@ audio: [
         </script>
       </section>
 
+<section class="asmr-post" id="post_RJ272970">
+        <h2>Otro post con player</h2>
+        <p>2 tracks</p>
+        <div id="player_RJ272970"></div>
+        <div class="controls">
+          <button id="subtitle-toggle-btn-RJ272970" class="toggle-subtitle-btn">Mostrar Subtítulos</button>
+        </div>
+        <script>
+          (function(){
+            const ID = 'RJ272970';
+            const container = document.getElementById('player_' + ID);
+            if (!container || container.classList.contains('aplayer-initialized')) return;
+            container.classList.add('aplayer-initialized');
+
+            const ap = new APlayer({
+              container: container,
+              theme: '#7e57c2',
+              lrcType: 3,
+              <!-- AUDIO_LIST_START:RJ272970 -->
+audio: [
+{
+    name: '1. 1.村の淫らな慣習',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/1.村の淫らな慣習.opus',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '2. 2.口噛み酒を口移しで',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/2.口噛み酒を口移しで.opus',
+    lrc: 'subtitulos/RJ272970/2.口噛み酒を口移しで.lrc',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '3. 3.摩羅しゃぶりの儀',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/3.摩羅しゃぶりの儀.opus',
+    lrc: 'subtitulos/RJ272970/3.摩羅しゃぶりの儀.lrc',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '4. 4.おまんこ奉納の儀（菫)',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/4.おまんこ奉納の儀（菫).opus',
+    lrc: 'subtitulos/RJ272970/4.おまんこ奉納の儀（菫).lrc',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '5. 5.耳舐め回し発情誘惑手コキ',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/5.耳舐め回し発情誘惑手コキ.opus',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '6. 6.どっぷりお精子奉納（椿)',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/6.どっぷりお精子奉納（椿).opus',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '7. 7.神主さんとえっちの練習♪（菫)',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/7.神主さんとえっちの練習♪（菫).opus',
+    cover: 'covers/RJ272970.png',
+},
+{
+    name: '8. 8.二人きりで（椿)',
+    artist: 'RJ272970',
+    url: 'audios/RJ272970/8.二人きりで（椿).opus',
+    cover: 'covers/RJ272970.png',
+}
+]
+<!-- AUDIO_LIST_END:RJ272970 -->
+            });
+
+            const lyricsBar = document.getElementById('lyricsBar');
+            const lyricSpan = document.getElementById('lyric');
+            const toggleBtn = document.getElementById('subtitle-toggle-btn-RJ272970');
+            let subtitlesEnabled = false;
+
+            toggleBtn.addEventListener('click', function() {
+              subtitlesEnabled = !subtitlesEnabled;
+              this.classList.toggle('active', subtitlesEnabled);
+              lyricsBar.classList.toggle('visible', subtitlesEnabled);
+              this.textContent = subtitlesEnabled ? 'Ocultar Subtítulos' : 'Mostrar Subtítulos';
+              if (!subtitlesEnabled) lyricSpan.textContent = '';
+              else {
+                const currentLine = container.querySelector('.aplayer-lrc-current');
+                if (currentLine) lyricSpan.textContent = currentLine.textContent;
+              }
+            });
+
+            ap.on('canplay', function () {
+              const lrcContainer = container.querySelector('.aplayer-lrc');
+              if (!lrcContainer) return;
+              const observer = new MutationObserver(() => {
+                const current = lrcContainer.querySelector('.aplayer-lrc-current');
+                const text = current ? current.textContent : '';
+                if (subtitlesEnabled && lyricSpan.textContent !== text) {
+                  lyricSpan.textContent = text;
+                }
+              });
+              observer.observe(lrcContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+            });
+          })();
+        </script>
+      </section>
+
     </main>
   </div>
 
