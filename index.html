@@ -287,10 +287,10 @@ audio: [
     cover: 'covers/RJ272970.jpg',
 },
 {
-    name: '7. 7.神主さんとえっちの練習♪ 菫',
+    name: '7. 7.神主さんとえっちの練習 菫',
     artist: 'RJ272970',
-    url: 'audios/RJ272970/7.神主さんとえっちの練習♪ 菫.opus',
-    lrc: 'subtitulos/RJ272970/7.神主さんとえっちの練習♪ 菫.lrc',
+    url: 'audios/RJ272970/7.神主さんとえっちの練習 菫.opus',
+    lrc: 'subtitulos/RJ272970/7.神主さんとえっちの練習 菫.lrc',
     cover: 'covers/RJ272970.jpg',
 },
 {
@@ -307,6 +307,91 @@ audio: [
             const lyricsBar = document.getElementById('lyricsBar');
             const lyricSpan = document.getElementById('lyric');
             const toggleBtn = document.getElementById('subtitle-toggle-btn-RJ272970');
+            let subtitlesEnabled = false;
+
+            toggleBtn.addEventListener('click', function() {
+              subtitlesEnabled = !subtitlesEnabled;
+              this.classList.toggle('active', subtitlesEnabled);
+              lyricsBar.classList.toggle('visible', subtitlesEnabled);
+              this.textContent = subtitlesEnabled ? 'Ocultar Subtítulos' : 'Mostrar Subtítulos';
+              if (!subtitlesEnabled) lyricSpan.textContent = '';
+              else {
+                const currentLine = container.querySelector('.aplayer-lrc-current');
+                if (currentLine) lyricSpan.textContent = currentLine.textContent;
+              }
+            });
+
+            ap.on('canplay', function () {
+              const lrcContainer = container.querySelector('.aplayer-lrc');
+              if (!lrcContainer) return;
+              const observer = new MutationObserver(() => {
+                const current = lrcContainer.querySelector('.aplayer-lrc-current');
+                const text = current ? current.textContent : '';
+                if (subtitlesEnabled && lyricSpan.textContent !== text) {
+                  lyricSpan.textContent = text;
+                }
+              });
+              observer.observe(lrcContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+            });
+          })();
+        
+       </script>
+      </section>
+      <section class="asmr-post" id="post_RJ201501">
+        <h2>Otro post con player</h2>
+        <p>2 tracks</p>
+        <div id="player_RJ201501"></div>
+        <div class="controls">
+          <button id="subtitle-toggle-btn-RJ201501" class="toggle-subtitle-btn">Mostrar Subtítulos</button>
+        </div>
+        <script>
+          (function(){
+            const ID = 'RJ201501';
+            const container = document.getElementById('player_' + ID);
+            if (!container || container.classList.contains('aplayer-initialized')) return;
+            container.classList.add('aplayer-initialized');
+
+            const ap = new APlayer({
+              container: container,
+              theme: '#7e57c2',
+              lrcType: 3,
+              <!-- AUDIO_LIST_START:RJ201501 -->
+audio: [
+{
+    name: '1. 01.夏の日の巫女と日記帳',
+    artist: 'RJ201501',
+    url: 'audios/RJ201501/01.夏の日の巫女と日記帳.mp3',
+    lrc: 'subtitulos/RJ201501/01.夏の日の巫女と日記帳.lrc',
+    cover: 'covers/RJ201501.jpg',
+},
+{
+    name: '2. 02.鴨田山日和',
+    artist: 'RJ201501',
+    url: 'audios/RJ201501/02.鴨田山日和.mp3',
+    lrc: 'subtitulos/RJ201501/02.鴨田山日和.lrc',
+    cover: 'covers/RJ201501.jpg',
+},
+{
+    name: '3. 03.わたしたちの絆',
+    artist: 'RJ201501',
+    url: 'audios/RJ201501/03.わたしたちの絆.mp3',
+    lrc: 'subtitulos/RJ201501/03.わたしたちの絆.lrc',
+    cover: 'covers/RJ201501.jpg',
+},
+{
+    name: '4. 04.夏空Fragment',
+    artist: 'RJ201501',
+    url: 'audios/RJ201501/04.夏空Fragment.mp3',
+    lrc: 'subtitulos/RJ201501/04.夏空Fragment.lrc',
+    cover: 'covers/RJ201501.jpg',
+}
+]
+<!-- AUDIO_LIST_END:RJ201501 -->
+            });
+
+            const lyricsBar = document.getElementById('lyricsBar');
+            const lyricSpan = document.getElementById('lyric');
+            const toggleBtn = document.getElementById('subtitle-toggle-btn-RJ201501');
             let subtitlesEnabled = false;
 
             toggleBtn.addEventListener('click', function() {
