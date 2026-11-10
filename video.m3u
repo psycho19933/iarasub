@@ -1,3 +1,39 @@
 #EXTM3U
-#EXTINF:-1,Mi Video
+
+# Tensei Kizoku S02
+
+#EXTINF:-1,Ep 01
 https://gupload.site/data/e/hls/0e9b3ca32290/720p.m3u8
+
+#EXTINF:-1,Ep 02
+https://player.zilla-networks.com/m3u8/df7d2c97d636cfae5dc25872cbb8a78d
+
+#EXTINF:-1,Ep 03
+https://player.zilla-networks.com/m3u8/1ba382daa1ef78483c8a326ec810215f
+
+#EXTINF:-1,Ep 04
+https://player.zilla-networks.com/m3u8/100a9e38a425aea4f91c450f8a43ea15
+
+#EXTINF:-1,Ep 05
+https://player.zilla-networks.com/m3u8/c9381c377eab9aae9043cc9158555c16
+
+#EXTINF:-1,Ep 06
+https://player.zilla-networks.com/m3u8/50521ed8e07c7300b30481ce03096b76
+
+#EXTINF:-1,Ep 07
+https://player.zilla-networks.com/m3u8/0bdd3fe30c4cbc6f5085fe60e811bd7f
+
+#EXTINF:-1,Ep 08
+https://player.zilla-networks.com/m3u8/601b4b4ce4903c807f5e589ec6f14194
+
+#EXTINF:-1,Ep 09
+https://player.zilla-networks.com/m3u8/f51e7289a6575c9fe03870f355333113
+
+#EXTINF:-1,Ep 10
+https://player.zilla-networks.com/m3u8/6032fa2bef67a13d9d0701c1dd724ec6
+
+#EXTINF:-1,Ep 11
+https://player.zilla-networks.com/m3u8/3decfbc91fd926d09ff280d5f15cbb16
+
+#EXTINF:-1,Ep 12
+https://player.zilla-networks.com/m3u8/4fa0ff015b411693a1134fb3a3bb6896
